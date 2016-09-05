@@ -1,0 +1,42 @@
+version: '2'
+services:
+  flask1:
+    build: ./flask
+    ports:
+     - "7496"
+     - "7373"
+     - "5000:5000"
+    volumes:
+     - ./flask/code:/code
+    links:
+     - redis
+     - salt
+    depends_on:
+     - redis
+     - salt
+    hostname: flask1
+    container_name: flask1
+    tty: true
+  redis:
+    build: ./redis
+    ports:
+     - "7496"
+     - "7373"
+     - "6379:6379"
+    links:
+     - salt
+    depends_on:
+     - salt
+    hostname: redis
+    container_name: redis
+    tty: true
+  salt:
+    build: ./salt
+    ports:
+     - "7496"
+     - "7373"
+     - "4505:4505"
+     - "4506:4506"
+    hostname: salt
+    container_name: salt
+    tty: true
