@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 EXPOSE 7496
 EXPOSE 7373
 EXPOSE 22
-EXPOSE 5000
+EXPOSE 80
 
 # install basic deps
 RUN apt-get update
@@ -22,11 +22,12 @@ RUN echo "deb http://repo.saltstack.com/apt/ubuntu/14.04/amd64/latest trusty mai
 RUN apt-get update
 RUN apt-get install -y salt-master salt-minion salt-ssh salt-syndic salt-cloud salt-api
 
-# install flask
-RUN apt-get -y install python python-dev python-pip
-ADD ./deps/requirements.txt /tmp/requirements.txt
-WORKDIR /tmp
-RUN pip install -r requirements.txt
+# install haproxy
+RUN apt-get -y install software-properties-common
+RUN add-apt-repository -y ppa:vbernat/haproxy-1.5
+RUN apt-get update
+RUN apt-get install -y haproxy
+ADD ./deps/haproxy.cfg /etc/haproxy/haproxy.cfg
 
 ADD ./deps/startup.sh /tmp/startup.sh
 RUN chmod +x /tmp/startup.sh

@@ -30,6 +30,21 @@ services:
     hostname: redis
     container_name: redis
     tty: true
+  haproxy:
+    build: ./haproxy
+    ports:
+     - "7496"
+     - "7373"
+     - "5008:80"
+    links:
+     - flask1
+     - salt
+    depends_on:
+     - flask1
+     - salt
+    hostname: haproxy
+    container_name: haproxy
+    tty: true
   salt:
     build: ./salt
     ports:

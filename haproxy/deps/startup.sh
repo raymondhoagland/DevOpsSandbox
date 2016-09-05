@@ -1,3 +1,4 @@
 #! /bin/bash
 serf agent -config-file /etc/serf/config.json &
-salt-master &
+salt-minion &
+service haproxy restart
