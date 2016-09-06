@@ -1,4 +1,4 @@
 #! /bin/bash
 serf agent -config-file /etc/serf/config.json &
 salt-minion &
-redis-server /etc/redis/redis.conf &
+service varnish restart

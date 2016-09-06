@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 EXPOSE 7496
 EXPOSE 7373
 EXPOSE 22
-EXPOSE 6379
+EXPOSE 80
 
 # install basic deps
 RUN apt-get update
@@ -22,13 +22,15 @@ RUN echo "deb http://repo.saltstack.com/apt/ubuntu/14.04/amd64/latest trusty mai
 RUN apt-get update
 RUN apt-get install -y salt-master salt-minion salt-ssh salt-syndic salt-cloud salt-api
 
-# install redis
-RUN wget http://download.redis.io/redis-stable.tar.gz
-RUN tar xvzf redis-stable.tar.gz
-WORKDIR redis-stable
-RUN make
-RUN make install
-ADD ./deps/redis.conf /etc/redis/redis.conf
+# install varnish
+RUN apt-get -y install apt-transport-https curl
+RUN curl https://repo.varnish-cache.org/GPG-key.txt | apt-key add -
+RUN echo "deb https://repo.varnish-cache.org/ubuntu/ trusty varnish-4.1" \
+     >> /etc/apt/sources.list.d/varnish-cache.list
+RUN apt-get update
+RUN apt-get -y install varnish
+ADD ./deps/varnish /etc/default/varnish
+ADD ./deps/user.vcl /etc/varnish/user.vcl
 
 ADD ./deps/startup.sh /tmp/startup.sh
 RUN chmod +x /tmp/startup.sh

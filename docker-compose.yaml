@@ -30,6 +30,21 @@ services:
     hostname: redis
     container_name: redis
     tty: true
+  varnish:
+    build: ./varnish
+    ports:
+     - "7496"
+     - "7373"
+     - "5007:80"
+    links:
+     - haproxy
+     - salt
+    depends_on:
+     - haproxy
+     - salt
+    hostname: varnish
+    container_name: varnish
+    tty: true
   haproxy:
     build: ./haproxy
     ports:
