@@ -23,6 +23,8 @@ RUN echo "deb http://repo.saltstack.com/apt/ubuntu/14.04/amd64/latest trusty mai
 RUN apt-get update
 RUN apt-get install -y salt-master salt-minion salt-ssh salt-syndic salt-cloud salt-api
 RUN echo "auto_accept: True" > /etc/salt/master
+ADD ./deps/vim.sls /srv/salt/vim.sls
+ADD ./deps/vimrc /srv/salt/vimrc
 
 ADD ./deps/startup.sh /tmp/startup.sh
 RUN chmod +x /tmp/startup.sh

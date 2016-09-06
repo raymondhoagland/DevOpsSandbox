@@ -17,6 +17,23 @@ services:
     hostname: flask1
     container_name: flask1
     tty: true
+  flask2:
+    build: ./flask
+    ports:
+     - "7496"
+     - "7373"
+     - "5001:5000"
+    volumes:
+     - ./flask/code:/code
+    links:
+     - redis
+     - salt
+    depends_on:
+     - redis
+     - salt
+    hostname: flask2
+    container_name: flask2
+    tty: true
   redis:
     build: ./redis
     ports:
